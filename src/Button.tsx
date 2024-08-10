@@ -6,9 +6,8 @@ type Props = {
 	onClick: (value: string | number, type: string) => void;
 }
 
-const Button = (props: Props) => {
-	const { value, type, buttonStyle, label, onClick } = props;
-
+const Button = ({ value, type, buttonStyle, label, onClick }: Props) => {
+	
 	const handleButtonClick = () => {
 		onClick(value, type);
 	}

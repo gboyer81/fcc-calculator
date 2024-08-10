@@ -3,9 +3,7 @@ type Props = {
 	actionToPerform: (value: string | number, keyType: string) => void;
 	allClear: boolean;
 }
-const Keypad = (props: Props) => {
-	const { actionToPerform, allClear } = props
-
+const Keypad = ({ actionToPerform, allClear }: Props) => {
 	const numericKeys = [7, 8, 9, 4, 5, 6, 1, 2, 3]
   
   const operatorKeys = [
@@ -16,11 +14,11 @@ const Keypad = (props: Props) => {
     { label: "=", value: "=" }
   ]
   
-const functionKeys: { label: string; value: string; buttonStyle: string }[] = [
-  { label: allClear ? "AC" : "C", value: allClear ? "AC" : "C", buttonStyle: "fx-key" },
-  { label: "±", value: "+/-", buttonStyle: "fx-key" },
-  { label: "%", value: "%", buttonStyle: "fx-key" }
-]
+	const functionKeys = [
+		{ label: allClear ? "AC" : "C", value: allClear ? "AC" : "C", buttonStyle: "fx-key" },
+		{ label: "±", value: "+/-", buttonStyle: "fx-key" },
+		{ label: "%", value: "%", buttonStyle: "fx-key" }
+	]
   
   const lastRowKeys = [
     { label: "0", value: "0", type: "numeric", buttonStyle: "numeric-key special" },
@@ -32,7 +30,7 @@ const functionKeys: { label: string; value: string; buttonStyle: string }[] = [
 	}
 	
 	return (
-		<div id="keypad" className="flex row jc-sp-around">
+		<div id="keypad" className="flex row justify-sp-around">
 			<div className="grid">
 				{functionKeys.map((fnKey) => (
 					<Button
@@ -47,7 +45,7 @@ const functionKeys: { label: string; value: string; buttonStyle: string }[] = [
 				{numericKeys.map((numKey) => (
 					<Button
 						key={numKey}
-						label={numKey.toString()} // Convert numKey to a string
+						label={String(numKey)} // Convert numKey to a string
 						value={numKey}
 						buttonStyle="numeric-key"
 						onClick={handleClickButton}
@@ -65,7 +63,7 @@ const functionKeys: { label: string; value: string; buttonStyle: string }[] = [
 					/>
 				))}
 			</div>
-			<div className="flex column jc-sp-btw">
+			<div className="flex column justify-sp-btw">
 				{operatorKeys.map((opKey) => (
 					<Button
 						key={opKey.label}

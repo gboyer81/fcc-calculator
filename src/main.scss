@@ -42,20 +42,24 @@ body {
 	justify-content: flex-end;
 }
 
-.jc-sp-btw {
+.justify-sp-btw {
 	justify-content: space-between;
 }
 
-.jc-sp-around {
+.justify-sp-around {
 	justify-content: space-around;
 }
 
-.jc-center {
+.justify-center {
 	justify-content: center;
 }
 
-.ai-center {
+.align-center {
 	align-items: center;
+}
+
+.bottom-pad-lg {
+	padding-bottom: 3.5rem;
 }
 
 .grid {
@@ -64,7 +68,7 @@ body {
 	gap: 9px;
 }
 
-#calculator-view {
+#calc-view {
 	width: 385px;
 	height: 775px;
 	background-color: $black;
@@ -72,17 +76,18 @@ body {
 	border: 10px solid $dark-gray;
 	#viewport {
 		width: 90%;
-		height: 70%;
+		height: 82%;
 		#display {
 			width: 100%;
 			input {
 				border: none;
 				outline: none;
-				font-size: 6rem;
+				font-size: 5rem;
 				background-color: $black;
 				width: 100%;
 				text-align: right;
 				padding-right: 20px;
+				margin-bottom: 1rem;
 			}
 		}
 		#keypad {

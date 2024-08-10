@@ -9,11 +9,6 @@ const Calculator = () => {
   const [currentOperator, setCurrentOperator] = useState<string | null>(null)
   const [expectsOperand, setExpectsOperand] = useState<boolean>(false)
 
-  useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [screenValue])
-
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Backspace') {
       e.preventDefault()
@@ -22,46 +17,30 @@ const Calculator = () => {
   }
 
   const clearLastDigit = () => {
-    //if (screenValue.length !== '0')
-    if (screenValue.length > 1) {
+    if (screenValue.length === 1) {
       setScreenValue('0')
     } else {
       setScreenValue(screenValue.substring(0, screenValue.length - 1))
     }
-  }
+	}
+	
+	useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [screenValue])
 
-  const handleActionToPerform = (value: string | number, keyType: string) => {
-    switch (keyType) {
-      case 'fx':
-        handleClickFunctionKey(value.toString())
-        break
-      case 'numeric':
-        handleClickNumericKey(value.toString())
-        break
-      case 'operator':
-        handleClickOperator(value.toString())
-        break
-    }
-  }
-
-  const handleClickFunctionKey = (value: string) => {
-    switch (value) {
-      case 'AC':
-        allClear()
-        break
-      case 'C':
-        clearScreen()
-        break
-      case '+/-':
-        reverseSign()
-        break
-      case '%':
-        percentage()
-        break
-      case '.':
-        addDecimalPoint()
-        break
-    }
+	const handleActionToPerform = (value: string | number, keyType: string) => {
+		if (keyType === 'fx') return handleClickFunctionKey(String(value))
+		if (keyType === 'numeric') return handleClickNumericKey(String(value))
+		if (keyType === 'operator') return handleClickOperator(String(value))
+	}
+	
+	const handleClickFunctionKey = (value: string) => {
+		if (value === 'AC') return allClear()
+		if (value === 'C') return clearScreen()
+		if (value === '+/-') return reverseSign()
+		if (value === '%') return percentage()
+		if (value === '.') return addDecimalPoint()  
   }
 
   const handleClickNumericKey = (value: string) => {
@@ -69,7 +48,7 @@ const Calculator = () => {
       setScreenValue(String(value))
       setExpectsOperand(false)
     } else {
-      setScreenValue(screenValue === '0' ? String(value) : screenValue + value)
+      setScreenValue(screenValue === '0' ? String(value) : `${screenValue}${value}`)
     }
   }
 
@@ -99,22 +78,19 @@ const Calculator = () => {
       setScreenValue('0.')
     } else {
       if (!screenValue.includes('.')) {
-        setScreenValue(screenValue + '.')
+        setScreenValue(`${screenValue}.`)
       }
     }
     setExpectsOperand(false)
   }
 
 	const handleClickOperator = (operator: string) => {
-		
 		const inputValue = parseFloat(screenValue)
     if (accValue === null) {
       setAccValue(inputValue)
     } else {
 			if (currentOperator) {
-				console.log(currentOperator)
 				const resultValue = operate(currentOperator, accValue, inputValue)
-				console.log(currentOperator, accValue, inputValue, resultValue)
         setAccValue(resultValue || null)
         setScreenValue(String(resultValue))
       }
@@ -125,15 +101,15 @@ const Calculator = () => {
 
 	const operate = (operator: string, accValue: number, inputValue: number) => {
 		if (operator === '+') return accValue + inputValue
-		else if (operator === '-') return accValue - inputValue
-		else if (operator === '×') return accValue * inputValue
-		else if (operator === '/') return accValue / inputValue
-		else if (operator === '=') return inputValue
+		if (operator === '-') return accValue - inputValue
+		if (operator === '×') return accValue * inputValue
+		if (operator === '/') return accValue / inputValue
+		if (operator === '=') return inputValue
 	}  
 
   return (
-    <div id="calculator-view" className={'flex column jc-center ai-center'}>
-      <div id="viewport" className={'flex column jc-sp-between ai-center'}>
+    <div id="calc-view" className='flex column flex-end align-center'>
+      <div id="viewport" className='flex column flex-end bottom-pad-lg align-center'>
         <Display value={screenValue} />
         <Keypad
           actionToPerform={handleActionToPerform}
